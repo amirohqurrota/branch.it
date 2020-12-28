@@ -13,10 +13,19 @@ cabang=str((cabangDict["Pondok Mutiara"])).zfill(2)
 jumlahKaryawan=str(9).zfill(3)
 idUser=jabatan+"-"+status+"-"+cabang+"-"+jumlahKaryawan
 
-print(idUser)
+# print(idUser)
 
-b=str(3)
+# b=str(3)
 
-c=2
-d=int(b)+c
-print(d)
+# c=2
+# d=int(b)+c
+# print(d)
+
+# a={"laptop":3,"motor":2}
+# print(a["laptop"])
+# for i in a:
+#     print(a[i])
+
+a=str(123)
+b=str(a[0])+str(a[1])
+print(b)

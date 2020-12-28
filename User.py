@@ -14,7 +14,7 @@ class User :
         None
     
     
-    @staticmethod  #agar method nempel di class bukan di object 
+    @staticmethod  #agar method nempel di class bukan di object
     def listCabang(cabang): #override method listStatus yang ada di user
         cabangDict={"Jember":1,"Pondok Gede":2, "Caipan":3}
         None
@@ -27,8 +27,8 @@ class User :
         self.idJabatan= str(0)
         self.idStatus= self.listStatus(status) #status nya akan memanggil method listStatus 
         self.idCabang= self.listCabang(cabang)
-        id =str(User.jumlah).zfill(3)
-        self.idUser=str(self.idJabatan) +"-"+ str(self.idStatus) +"-"+ str(self.idCabang)+"-"+ id
+        self.id =str(User.jumlah).zfill(3)
+        self.idUser=str(self.idJabatan) +"-"+ str(self.idStatus) +"-"+ str(self.idCabang)+"-"+ self.id
         self.totalFee=0
         self.jumlahAbsensi=0
         self.totalGaji=0
@@ -45,6 +45,7 @@ class User :
         
     def setJumlahAbsensi(self):
         self.jumlahAbsensi+=1
+        self.setTotalFee(20000)
         data=conn.cursor().execute("update user set jumlahAbsensi=? where idUser=?",(self.jumlahAbsensi,self.idUser,))
         conn.commit()
      
@@ -75,8 +76,8 @@ class Owner(User):
         self.idJabatan=str(1).zfill(1)
         self.idStatus=str(0).zfill(2)
         self.idCabang=str(0).zfill(2)
-        id =str(Owner.__jumlahOwner).zfill(3)
-        self.idUser=str(self.idJabatan) +"-"+ str(self.idStatus) +"-"+ str(self.idCabang)+"-"+ id
+        self.id =str(Owner.__jumlahOwner).zfill(3)
+        self.idUser=str(self.idJabatan) +"-"+ str(self.idStatus) +"-"+ str(self.idCabang)+"-"+ self.id
         conn.execute("insert or ignore into user values (?,?,?,?,?)" , (self.idUser,self.username,self.__password,self.jumlahAbsensi,self.totalGaji)) #masukkan ke database
         conn.commit()
         
@@ -154,7 +155,9 @@ class Manager(User) :
     def showInfo(self,username,status,jabatan):
         print("username : {} /n Status : {} /n Jabatan : {}".format(self.username,self.status,self.jabatan))
 
-amiroh=Karyawan("woy","12345678","Jember","Karyawan Tetap",)
-amiroh2=Manager("woyy","12345678","Green Hill","Karyawan Magang",)
-amiroh2.setTotalFee(2000000)
-amiroh2.setJumlahAbsensi()
+# amiroh=Karyawan("woy","12345678","Jember","Karyawan Tetap",)
+# amiroh1=Karyawan("woy2","12345678","Jember","Karyawan Tetap",)
+# amiroh2=Manager("woyy","12345678","Green Hill","Karyawan Magang",)
+# amiroh2.setTotalFee(2000000)
+# amiroh2.setJumlahAbsensi()
+# print(amiroh.idUser)

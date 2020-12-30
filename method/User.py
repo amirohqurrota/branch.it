@@ -1,5 +1,6 @@
 import sqlite3
 
+from .store import Toko
 databaseName='iniDBbuatCoba.db'
 conn = sqlite3.connect(databaseName)
 
@@ -12,21 +13,21 @@ class User :
     @staticmethod  #agar method nempel di class bukan di object 
     def listStatus(status): #override method listStatus yang ada di user
         None
-    
-    
-    @staticmethod  #agar method nempel di class bukan di object
-    def listCabang(cabang): #override method listStatus yang ada di user
-        cabangDict={"Jember":1,"Pondok Gede":2, "Caipan":3}
-        None
-    
+
 
     def __init__(self,username,password,cabang,status):
         User.jumlah+=1
         self.username=username
         self.password=password
         self.idJabatan= str(0)
-        self.idStatus= self.listStatus(status) #status nya akan memanggil method listStatus 
-        self.idCabang= self.listCabang(cabang)
+        if status==None:
+            self.idStatus=00
+        else:
+            self.idStatus= self.listStatus(status) #status nya akan memanggil method listStatus 
+        if cabang==None:
+            self.idCabang=00
+        else:
+            self.idCabang= Toko.getIdCabang(cabang)
         self.id =str(User.jumlah).zfill(3)
         self.idUser=str(self.idJabatan) +"-"+ str(self.idStatus) +"-"+ str(self.idCabang)+"-"+ self.id
         self.totalFee=0
@@ -94,15 +95,7 @@ class Karyawan(User) :
         statusDict = {"Karyawan Tetap": 1,"Karyawan Tidak Tetap": 2,"Karyawan Magang":3}
         idStatus=str((statusDict[status])).zfill(2)
         return idStatus
-    
-    @classmethod  #agar method nempel di class bukan di object 
-    def listCabang(cls,cabang): #override method listStatus yang ada di user
-        cabangDict={"Jember":1,"Pondok Gede":2, "Caipan":3,
-            "Pondok Jati":4,"Pondok Mutiara":5,"Green Hill":6,
-            "Wilang Bango":7,"Madalengka":8,"Bursa":9}
-        idCabang=str((cabangDict[cabang])).zfill(2)
-        return idCabang
-    
+
     @classmethod  #agar method nempel di class bukan di object 
     def listGajiPokok(cls,idStatus): #override method listStatus yang ada di user
         gajiPokokDict={1:1500000,2:1000000,3:500000}
@@ -129,14 +122,6 @@ class Karyawan(User) :
 class Manager(User) :
 
     __jumlahManager=0
-    
-    @classmethod  #agar method nempel di class bukan di object 
-    def listCabang(cls,cabang): #override method listStatus yang ada di user
-        cabangDict={"Jember":1,"Pondok Gede":2, "Caipan":3,
-            "Pondok Jati":4,"Pondok Mutiara":5,"Green Hill":6,
-            "Wilang Bango":7,"Madalengka":8,"Bursa":9}
-        idCabang=str((cabangDict[cabang])).zfill(2)
-        return idCabang
     
     def __init__(self,username,password,cabang,status):
         Manager.__jumlahManager+=1

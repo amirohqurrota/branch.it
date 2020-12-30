@@ -26,6 +26,14 @@ idUser=jabatan+"-"+status+"-"+cabang+"-"+jumlahKaryawan
 # for i in a:
 #     print(a[i])
 
-a=str(123)
-b=str(a[0])+str(a[1])
-print(b)
+# a=str(123)
+# b=str(a[0])+str(a[1])
+# print(b)
+a={1:"a",2:"b"}
+print(a[1])
+
+
+
+my_data = '1-23-06'
+parsed = my_data.split('-')
+print(parsed)

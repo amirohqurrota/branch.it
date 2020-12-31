@@ -25,7 +25,7 @@ class User :
         else:
             self.idStatus= self.listStatus(status) #status nya akan memanggil method listStatus 
         if cabang==None:
-            self.idCabang=00
+            self.idCabang=str(00)
         else:
             self.idCabang= Toko.getIdCabang(cabang)
         self.id =str(User.jumlah).zfill(3)

@@ -1,5 +1,5 @@
 import sqlite3
-from .User import Manager,Karyawan
+from .User import User,Owner,Manager,Karyawan
 
 
 databaseName='iniDBbuatCoba.db'
@@ -12,7 +12,7 @@ conn.execute("DROP TABLE IF EXISTS transaksi")
 conn.execute("CREATE TABLE IF NOT EXISTS transaksi  (idTransaksi int primary key,orderDate str ,totalTransaksi int)")
 
 conn.execute("DROP TABLE IF EXISTS barang")
-conn.execute("CREATE TABLE IF NOT EXISTS barang  (idBarang int primary key,namaBarang str ,harga int,jumlahStok int,jumlahTerjual int, keuntungan int)")
+conn.execute("CREATE TABLE IF NOT EXISTS barang  (idBarang int primary key,namaBarang str ,idCabang str,harga int,jumlahStok int,jumlahTerjual int, keuntungan int)")
 
    
 class Order:
@@ -63,7 +63,7 @@ class Barang:
         self.keuntungan=self.__harga*keuntungan
         self.jumlahStok=jumlahStok
         self.jumlahTerjual=0
-        conn.execute("insert or ignore into barang values (?,?,?,?,?,?)" , (self.idBarang,self.namaBarang,self.__harga,self.jumlahStok,self.jumlahTerjual,self.keuntungan)) #masukkan ke database
+        conn.execute("insert or ignore into barang values (?,?,?,?,?,?,?)" , (self.idBarang,self.namaBarang,self.idCabang,self.__harga,self.jumlahStok,self.jumlahTerjual,self.keuntungan)) #masukkan ke database
         conn.commit()
         
    

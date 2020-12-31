@@ -26,8 +26,8 @@ apel=Barang("apel",20000,0.4,10,1)
 apel=Barang("apel",20000,0.4,15,3)
 
 jeruk=Barang("jeruk",20000,0.4,20,2)
-jeruk=Barang("apel",20000,0.4,10,1)
-jeruk=Barang("apel",20000,0.4,15,3)
+jeruk=Barang("jeruk",20000,0.4,10,1)
+jeruk=Barang("jeruk",20000,0.4,15,3)
 
 def login():
     username=input("masukkan username ")
@@ -40,7 +40,31 @@ def login():
     else:
         print("maaf, username dan password yang anda masukkan salah. silahkan coba kembali")
 
-login()   
+#login()
+
+def absenKehadiran(username):
+    username.setJumlahAbsensi()
+    print("Absensi telah ditambahkan, Selamat Bekerja!")
+    
+#absenKehadiran(arif)
+def cekStokToko(username,cabang):
+    id=Toko.getIdCabang(cabang)
+    data=conn.cursor().execute("select * from barang where idCabang=?",(id,))
+    for row in data:
+        print("{}\t stok : {}".format(row[1],row[4]))
+
+def cetakTransaksi(username,cabang):
+    cekStokToko(username,cabang)
+    tgl=input("masukkan tanggal :")
+    list=input("tuliskan list barang beserta stoknya dalam bentuk dictionary")
+    Transaksi(tgl,list,username)
+    
+# cetakTransaksi(karyawan3,surabaya)
+
+    
+cetakTransaksi(karyawan3,"sidoarjo")
+
+def
 
 
 

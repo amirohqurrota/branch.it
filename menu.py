@@ -77,15 +77,23 @@ def daftarAbsensiKaryawan(cabang):
 
 
 def rekapitulasiToko(idCabang):
-    print(idCabang)
     dataTransaksi=conn.cursor().execute("select * from transaksi")
+    print("REKAPITULASI PENJUALAN TOKO {} ".format(Toko.getCabangbyId(int(idCabang))))
     for row in dataTransaksi:
-        if row[0][0]==idCabang:
+        if row[0][0]==str(idCabang):
             print("""
     ID Transaksi : {}
-        Tanggal : {}
-        jumlah   : {}
+    Tanggal      : {}
+    jumlah       : {}
             """.format(row[0],row[1],row[2]))
+
+
+def rekapitulasiSemuaToko():
+    dictToko=Toko.getCabangDict()
+    listIdToko=list(dictToko.values())
+    for i in listIdToko:
+        rekapitulasiToko(i)
+
 
 def tambahBarang():
     namaBarang=input("masukkan nama barang : ")
@@ -165,7 +173,7 @@ def menuOwner():
         else:
             print("terimakasih Owner, sampai jumpa besok")
     elif pilihan=="2":
-        rekapitulasiPenjualan()
+        rekapitulasiSemuaToko()
         inputMenu=input("apakah ingin kembali ke menu? y/n ")
         if inputMenu== "y":
             menuOwner()

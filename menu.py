@@ -55,7 +55,6 @@ def cetakTransaksi(username,cabang):
     namaBarang.setJumlahTerjual(jumlah)
     # acer2.setJumlahTerjual(1)
     
-# Transaksi("22/2/20",{apel:2,jeruk:1},karyawan1,madiun)
 
 def tampilkanOmsetSemuaToko():
     # idCabang=input("masukkan cabang yang ingin ditampilkan :")
@@ -76,11 +75,17 @@ def daftarAbsensiKaryawan(cabang):
             print("Nama : {} \t jumlahAbsensi : {} ".format(row[1],row[2]))
             break
 
-# daftarAbsensiKaryawan("madiun")
 
-#print(Toko.getIdCabang(a))
-# print(Toko.getCabangbyId(3))
-#print(Toko.getCabangDict())
+def rekapitulasiToko(idCabang):
+    print(idCabang)
+    dataTransaksi=conn.cursor().execute("select * from transaksi")
+    for row in dataTransaksi:
+        if row[0][0]==idCabang:
+            print("""
+    ID Transaksi : {}
+        Tanggal : {}
+        jumlah   : {}
+            """.format(row[0],row[1],row[2]))
 
 def tambahBarang():
     namaBarang=input("masukkan nama barang : ")
@@ -123,9 +128,6 @@ def tampilkanListHargaBarang(idCabang):
     data=conn.cursor().execute("select * from barang where idCabang=?",(idCabang,))
     for row in data:
         print ("Nama Barang : {} \t harga : {}".format(row[1],row[3]))
-
-def rekapitulasiPenjualan():
-    print("sek belum")
 
 def rankPenjualanBarang(idCabang):
     data=conn.cursor().execute("select * from barang where idCabang=? order by jumlahTerjual desc",(idCabang,))
@@ -237,7 +239,7 @@ def menuManager():
             print("terimakasih, sampai jumpa besok")
 
     elif pilihanManager=="5":
-        rekapitulasiPenjualan(idCabang)
+        rekapitulasiToko(idCabang)
         inputMenu=input("apakah ingin kembali ke menu? y/n ")
         if inputMenu== "y":
             menuManager()

@@ -14,7 +14,7 @@ conn.execute("CREATE TABLE IF NOT EXISTS transaksi  (idTransaksi int primary key
 
 conn.execute("DROP TABLE IF EXISTS barang")
 conn.execute("CREATE TABLE IF NOT EXISTS barang  (idBarang int primary key,namaBarang str ,idCabang str,harga int,jumlahStok int,jumlahTerjual int, keuntungan int)")
-
+  
    
 class Order:
     __jumlahOrder=0

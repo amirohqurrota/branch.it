@@ -35,13 +35,21 @@ idUser=jabatan+"-"+status+"-"+cabang+"-"+jumlahKaryawan
 #     print(a[b])
 a={'sidoarjo': 1, 'madiun': 2, 'surabaya': 3}
 
-key_list = list(a.keys())
-val_list = list(a.values())
-a=1
-position=val_list.index(a)
-print(key_list[position])
+# key_list = list(a.keys())
+# val_list = list(a.values())
+# a=1
+# position=val_list.index(a)
+# print(key_list[position])
 
 
+import sqlite3
+
+databaseName='iniDBbuatCoba.db'
+conn = sqlite3.connect(databaseName)
+namaBarang='apel'
+idCabang='1'
+data=conn.cursor().execute("select idBarang from barang where namaBarang=? and idCabang=?",(namaBarang,idCabang,))
+print (data[0])
 
 # my_data = '1-23-06'
 # parsed = my_data.split('-')

@@ -106,6 +106,24 @@ def tambahBarang():
     jumlahStok=int(input("masukkan jumlah stok yang tersedia"))
     namaBarang=Barang(namaBarang,harga,keuntungan,jumlahStok,idCabang)
 
+def tambahKaryawan():
+    usernameKaryawan=input("masukkan nama karyawan baru")
+    password=int(input("masukkan password karyawan baru"))
+    listStatus=Karyawan.getStatusDict()
+    for i in listStatus:
+    print ("status {} ".format(i))
+    status=input("masukkan status kepegawaian karyawan")
+    status=status.title()
+    jumlahStok=int(input("masukkan jumlah stok yang tersedia"))
+    usernameKaryawan=Karyawan(usernameKaryawan,password,cabang,status)
+
+def dataKehadiranKaryawan(idCabang):
+    data=data=conn.cursor().execute("select * from user")
+    for row in data:
+        x=row[0].split("-")
+        if x[2]==idCabang and x[1]=="3":
+            print ("Nama Karyawan: {}\t JumlahAbsensi: {} ".format(row[1],row[3]))
+
 def ubahStok(idCabang):
     cekStokToko(str(cabang))
     namaBarang=input("masukkan nama barang yang ingin diubah")
@@ -123,6 +141,13 @@ def tampilkanListHargaBarang(idCabang):
     for row in data:
         print ("Nama Barang : {} \t harga : {}".format(row[1],row[3]))
 
+def rekapitulasiPenjualan()
+    print("sek belum")
+
+def rankPenjualanBarang(idCabang):
+    data=conn.cursor().execute("select * from barang where idCabang=? order by jumlahTerjual desc",(idCabang,))
+    for row in data:
+        print("Nama barang : {} \t jumlah Terjual : {} \t keuntungan: {} ".format(row[1],row[5],row[6]))
 
 def menuOwner():
     print("""
@@ -134,19 +159,65 @@ def menuOwner():
             """)
     pilihan=input("masukkan angka pilihan menu : ")
 
+
 def menuManager():
     print("""
             Selamat datang Bapak/Ibu Manager, berikut pilihan menu yang tersedia :
-            1. Menambahkan data identitas tiap toko
-            2. Melihat data identitas tiap toko
+            1. melihat stok barang pada toko
             3. Menambahkan data barang
             3. Menambahkan data karyawan 
             4. Melihat data kehadiran karyawan
-            5. Melihat rekapitulasi penjualan per toko
-            6. Melihat data stok barang per toko
+            5. Melihat rekapitulasi penjualan toko
+            6. Rank penjualan barang tertinggi
 
             """)
     pilihan=input("masukkan angka pilihan menu : ")
+    if pilihan=="1":
+        cekStokToko(cabang)
+        inputMenu=input("apakah ingin kembali ke menu? y/n ")
+        if inputMenu== "y":
+            menuKaryawan()
+        else:
+            print("terimakasih, sampai jumpa besok")
+    elif pilihan=="2":
+        tambahBarang()
+        inputMenu=input("apakah ingin kembali ke menu? y/n ")
+        if inputMenu== "y":
+            menuKaryawan()
+        else:
+            print("terimakasih, sampai jumpa besok")
+
+    elif pilihan=="3":
+        tambahKaryawan()
+        inputMenu=input("apakah ingin kembali ke menu? y/n ")
+        if inputMenu== "y":
+            menuKaryawan()
+        else:
+            print("terimakasih, sampai jumpa besok")
+    
+    elif pilihan=="4":
+        dataKehadiranKaryawan(idCabang)
+        inputMenu=input("apakah ingin kembali ke menu? y/n ")
+        if inputMenu== "y":
+            menuKaryawan()
+        else:
+            print("terimakasih, sampai jumpa besok")
+
+    elif pilihan=="5":
+        rekapitulasiPenjualan(idCabang)
+        inputMenu=input("apakah ingin kembali ke menu? y/n ")
+        if inputMenu== "y":
+            menuKaryawan()
+        else:
+            print("terimakasih, sampai jumpa besok")
+    elif pilihan=="6":
+        rankPenjualanBarang(idCabang)
+        inputMenu=input("apakah ingin kembali ke menu? y/n ")
+        if inputMenu== "y":
+            menuKaryawan()
+        else:
+            print("terimakasih, sampai jumpa besok")
+
 
 def menuKaryawan():
     absenKehadiran(objek)
@@ -157,8 +228,7 @@ def menuKaryawan():
             3. Membuat data transaksi penjualan
             4. Melihat data stok barang
             5. Exit
-            6. {} {}
-            """.format(username,cabang,idCabang))
+            """.format(username))
     pilihan=input("masukkan angka pilihan menu : ")
     if pilihan=="1":
         ubahStok(idCabang)
@@ -238,6 +308,7 @@ def menuLanding():
 
 
 menuLanding()
+
 
     
 

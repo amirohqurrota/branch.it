@@ -89,11 +89,10 @@ class Owner(User):
     
 class Karyawan(User) :
     __jumlahKaryawan=0
-    
+    __statusDict = {"Karyawan Tetap": 1,"Karyawan Tidak Tetap": 2,"Karyawan Magang":3}
     @classmethod  #agar method nempel di class bukan di object 
     def listStatus(cls,status): #override method listStatus yang ada di user
-        statusDict = {"Karyawan Tetap": 1,"Karyawan Tidak Tetap": 2,"Karyawan Magang":3}
-        idStatus=str((statusDict[status])).zfill(2)
+        idStatus=str((Karyawan.__statusDict[status])).zfill(2)
         return idStatus
 
     @classmethod  #agar method nempel di class bukan di object 
@@ -101,7 +100,9 @@ class Karyawan(User) :
         gajiPokokDict={1:1500000,2:1000000,3:500000}
         gajiPokok=gajiPokokDict[int(idStatus)]
         return gajiPokok
-    
+    @classmethod
+    def getStatusDict(cls)
+        return Karyawan.__statusDict
     
     def __init__(self,username,password,cabang,status):
         Karyawan.__jumlahKaryawan+=1
@@ -140,7 +141,7 @@ class Manager(User) :
     def showInfo(self,username,status,jabatan):
         print("username : {} /n Status : {} /n Jabatan : {}".format(self.username,self.status,self.jabatan))
 
-# amiroh=Karyawan("woy","12345678","Jember","Karyawan Tetap",)
+
 # amiroh1=Karyawan("woy2","12345678","Jember","Karyawan Tetap",)
 # amiroh2=Manager("woyy","12345678","Green Hill","Karyawan Magang",)
 # amiroh2.setTotalFee(2000000)

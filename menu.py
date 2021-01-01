@@ -113,8 +113,8 @@ def ubahStok(idCabang):
     data=conn.cursor().execute("select idBarang from barang where namaBarang=? and idCabang=?",(namaBarang,idCabang,))
     for row in data:
         idBarang=row[0]
-    jumlah=int("masukkan update jumlah barang")
-    data=conn.cursor().execute("update barang set jumlahStock=? where idBarang=?",(jumlah,idBarang,))
+    jumlah=int(input("masukkan update jumlah barang"))
+    data=conn.cursor().execute("update barang set jumlahStok=? where idBarang=?",(jumlah,idBarang,))
     conn.commit()
 
 def tampilkanListHargaBarang(idCabang):
@@ -157,17 +157,38 @@ def menuKaryawan():
             3. Membuat data transaksi penjualan
             4. Melihat data stok barang
             5. Exit
-            """.format(username))
+            6. {} {}
+            """.format(username,cabang,idCabang))
     pilihan=input("masukkan angka pilihan menu : ")
-    if pilihan==1:
+    if pilihan=="1":
         ubahStok(idCabang)
-    elif pilihan==2:
+        inputMenu=input("apakah ingin kembali ke menu? y/n ")
+        if inputMenu== "y":
+            menuKaryawan()
+        else:
+            print("terimakasih, sampai jumpa besok")
+    elif pilihan=="2":
         tampilkanListHargaBarang(idCabang)
-    elif pilihan==3:
+        inputMenu=input("apakah ingin kembali ke menu? y/n ")
+        if inputMenu== "y":
+            menuKaryawan()
+        else:
+            print("terimakasih, sampai jumpa besok")
+    elif pilihan=="3":
         cetakTransaksi(usernameObjek,cabang)
-    elif pilihan==4:
+        inputMenu=input("apakah ingin kembali ke menu? y/n ")
+        if inputMenu== "y":
+            menuKaryawan()
+        else:
+            print("terimakasih, sampai jumpa besok")
+    elif pilihan=="4":
         cekStokToko(cabang)
-    elif pilihan==5:
+        inputMenu=input("apakah ingin kembali ke menu? y/n ")
+        if inputMenu== "y":
+            menuKaryawan()
+        else:
+            print("terimakasih, sampai jumpa besok")
+    elif pilihan=="5":
         print("terimakasih, sampai ketemu besok!")
 
 
@@ -216,7 +237,7 @@ def menuLanding():
         #print(username,idJabatan,idCabang,cabang)
 
 
-
+menuLanding()
 
     
 

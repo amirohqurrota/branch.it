@@ -85,6 +85,7 @@ class Barang:
         self.jumlahTerjual+=jumlah
         self.setJumlahStok(jumlah)
         self.totalKeuntungan()
+        print("-----",self.jumlahTerjual,"-------")
         data=conn.cursor().execute("update barang set jumlahTerjual=? where idBarang=?",(self.jumlahTerjual,self.idBarang,))
         conn.commit()
         

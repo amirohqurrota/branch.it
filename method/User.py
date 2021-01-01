@@ -4,8 +4,6 @@ from .store import Toko
 databaseName='iniDBbuatCoba.db'
 conn = sqlite3.connect(databaseName)
 
-conn.execute("DROP TABLE IF EXISTS user")
-conn.execute("CREATE TABLE IF NOT EXISTS user  (idUser int primary key,username text ,password text, jumlahAbsensi int ,  totalGaji int)")
 
 class User :
     jumlah=0
@@ -101,7 +99,7 @@ class Karyawan(User) :
         gajiPokok=gajiPokokDict[int(idStatus)]
         return gajiPokok
     @classmethod
-    def getStatusDict(cls)
+    def getStatusDict(cls):
         return Karyawan.__statusDict
     
     def __init__(self,username,password,cabang,status):

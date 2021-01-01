@@ -33,12 +33,13 @@ idUser=jabatan+"-"+status+"-"+cabang+"-"+jumlahKaryawan
 # #print(a["sidoarjo"]) 
 # for b in a:
 #     print(a[b])
-a={'sidoarjo': 1, 'madiun': 2, 'surabaya': 3}
-for i in a:
-    print ("cabang : {} id : {}".format(i,a[i]))
+a={'apel': 1, 'jeruk': 2, 'mangga': 3}
+# for i in listt:
+#      print (listt[i])
 
-# key_list = list(a.keys())
-# val_list = list(a.values())
+key_list = list(a.keys())
+val_list = list(a.values())
+print(val_list)
 # a=1
 # position=val_list.index(a)
 # print(key_list[position])

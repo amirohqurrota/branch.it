@@ -4,8 +4,6 @@ import sqlite3
 databaseName='iniDBbuatCoba.db'
 conn = sqlite3.connect(databaseName)
 
-conn.execute("DROP TABLE IF EXISTS toko")
-conn.execute("CREATE TABLE IF NOT EXISTS toko (idCabang int primary key,namaCabang text ,omset int)")
 
 class Toko ():
     __cabangDict={}

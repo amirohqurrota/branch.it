@@ -1,4 +1,5 @@
 import sqlite3
+
 from .User import User,Owner,Manager,Karyawan
 from .store import Toko as toko
 
@@ -6,19 +7,12 @@ from .store import Toko as toko
 databaseName='iniDBbuatCoba.db'
 conn = sqlite3.connect(databaseName)
 
-conn.execute("DROP TABLE IF EXISTS orderTabel")
-conn.execute("CREATE TABLE IF NOT EXISTS orderTabel(idOrder primary key,idUser str ,totalBelanja int)")
-
-conn.execute("DROP TABLE IF EXISTS transaksi")
-conn.execute("CREATE TABLE IF NOT EXISTS transaksi  (idTransaksi int primary key,orderDate str ,totalTransaksi int)")
-
-conn.execute("DROP TABLE IF EXISTS barang")
-conn.execute("CREATE TABLE IF NOT EXISTS barang  (idBarang int primary key,namaBarang str ,idCabang str,harga int,jumlahStok int,jumlahTerjual int, keuntungan int)")
-  
+global namaObjek
    
 class Order:
     __jumlahOrder=0
     def __init__(self,username,cabang,totalBelanja):
+        #usernameObjek=eval(username)
         Order.__jumlahOrder+=1
         self.id =str(Order.__jumlahOrder).zfill(4)
         self.__idOrder=str(username.idCabang)+"-"+str(username.id)+"-"+self.id
@@ -32,26 +26,7 @@ class Order:
    
     def getIdOrder(self):
         return self.__idOrder
-               
-class Transaksi:
-    __jumlahTransaksi=0
-    def __init__(self,orderDate,listBarang,username,cabang):
-        Transaksi.__jumlahTransaksi+=1
-        self.idUserTransaksi=username.idUser
-        self.id =str(Transaksi.__jumlahTransaksi).zfill(4)
-        self.__idTransaksi=str(username.idCabang)+"-"+str(username.id)+"-"+str(self.id)
-        self.orderDate=orderDate
-        self.listBarang=listBarang
-        self.totalTransaksi=0
-        for i in listBarang:
-           total=int(listBarang[i])* (i.getHarga())
-           self.totalTransaksi+=total
-           i.setJumlahTerjual(listBarang[i])
-        Order(username,cabang,self.totalTransaksi)
-        cabang.setOmset(self.totalTransaksi)
-        conn.execute("insert or ignore into transaksi values (?,?,?)" , (self.__idTransaksi,self.orderDate,self.totalTransaksi)) #masukkan ke database
-        conn.commit()
-        
+
     
 class Barang:
     __jumlahBarang=0
@@ -85,30 +60,39 @@ class Barang:
         self.jumlahTerjual+=jumlah
         self.setJumlahStok(jumlah)
         self.totalKeuntungan()
-        print("-----",self.jumlahTerjual,"-------")
+        # print("-----",self.jumlahTerjual,"-------")
         data=conn.cursor().execute("update barang set jumlahTerjual=? where idBarang=?",(self.jumlahTerjual,self.idBarang,))
         conn.commit()
-        
-# amiroh=Karyawan("amiroh","12345678","Green Hill","Karyawan Tetap",)
-# Apel=Barang("apel",5000,0.5,40,"Green Hill")
-# Jeruk=Barang("jeruk",7000,0.4,20,"Green Hill")
-# Sawo=Barang("sawo",10000,0.6,10,"Green Hill")
-# a=Transaksi("09-10-20",{Apel:2,Jeruk:10},amiroh)
-# print(Apel.jumlahStok)
-# print(Apel.jumlahTerjual)
-# print(Apel.keuntungan)
-# print(amiroh.totalGaji)
+  
 
+class Transaksi:
+    __jumlahTransaksi=0
+    def __init__(self,orderDate,listBarang,username,cabang):
+        Transaksi.__jumlahTransaksi+=1
+        self.idUserTransaksi=username.idUser
+        self.id =str(Transaksi.__jumlahTransaksi).zfill(4)
+        self.__idTransaksi=str(username.idCabang)+"-"+str(username.id)+"-"+str(self.id)
+        self.orderDate=orderDate
+        self.listBarang=listBarang
+        self.totalTransaksi=0
+        data=conn.cursor().execute("select * from barang where idCabang=?",(username.idCabang,))
+        for row1 in data:
+            for row2 in self.listBarang:
+                if row1[1]==row2:
+                    total=row1[3]*self.listBarang[row2]
+                    self.totalTransaksi+=total
+        # for row in listBarang:
+        #     # namaObjek=exec(row+str(username.idCabang))
+        #     # namaObjek.setJumlahTerjual(listBarang[row])
+        #     getattr(str(row2)+str(username.idCabang),setJumlahTerjual(listBarang[row2]))
+        #     #         # namaObjek=str(row2)+(username.idCabang)
+        #     #         # namaObjek=eval(namaObjek)
+        #     #         # # namaObjek.setJumlahTerjual(listBarang[row2])
 
-# woy=Karyawan("woy","12345678","Jember","Karyawan Tetap",)
-# woyy=Manager("woyy","12345678","Green Hill","Karyawan Magang",)
-# woyy.setTotalFee(2000000)
-# woyy.setJumlahAbsensi()      
-# woyy.setJumlahAbsensi()
-    
-# order1=Order(woy,500000)
+        Order(username,cabang,self.totalTransaksi)
+        cabang.setOmset(self.totalTransaksi)
+        conn.execute("insert or ignore into transaksi values (?,?,?)" , (self.__idTransaksi,self.orderDate,self.totalTransaksi)) #masukkan ke database
+        conn.commit()
 
-# print(woy.totalGaji)
-# # print(tono.__dict__)
-    
+  
     

@@ -1,3 +1,4 @@
+
 import sqlite3
 
 databaseName='iniDBbuatCoba.db'
@@ -29,6 +30,7 @@ jeruk=Barang("jeruk",20000,0.4,20,2)
 jeruk=Barang("jeruk",20000,0.4,10,1)
 jeruk=Barang("jeruk",20000,0.4,15,3)
 
+#login()
 def login():
     username=input("masukkan username ")
     password=input("masukkan password ")
@@ -40,31 +42,115 @@ def login():
     else:
         print("maaf, username dan password yang anda masukkan salah. silahkan coba kembali")
 
-#login()
-
+#absenKehadiran()
 def absenKehadiran(username):
     username.setJumlahAbsensi()
     print("Absensi telah ditambahkan, Selamat Bekerja!")
-    
-#absenKehadiran(arif)
+
+
 def cekStokToko(username,cabang):
     id=Toko.getIdCabang(cabang)
     data=conn.cursor().execute("select * from barang where idCabang=?",(id,))
     for row in data:
         print("{}\t stok : {}".format(row[1],row[4]))
 
+# cekStokSemuaToko()
+def cekStokSemuaToko():
+    listId=list(Toko.getCabangDict().values())
+    for i in listId:
+        print("=====STOK TOKO {}=====".format(Toko.getCabangbyId(i)).upper())
+        data=conn.cursor().execute("select * from barang where idCabang=?",(i,))
+        for row in data:
+            print("{}\t stok : {}".format(row[1],row[4]))
+
+# cekStokSemuaToko()
+#membuat transaksi
 def cetakTransaksi(username,cabang):
     cekStokToko(username,cabang)
     tgl=input("masukkan tanggal :")
-    list=input("tuliskan list barang beserta stoknya dalam bentuk dictionary")
-    Transaksi(tgl,list,username)
+    daftar=input("tuliskan list barang beserta stoknya dalam bentuk dictionary")
+    Transaksi(tgl,daftar,username,cabang)
     
-# cetakTransaksi(karyawan3,surabaya)
+#cetakTransaksi(karyawan1,"madiun")
+Transaksi("22/2/20",{apel:2,jeruk:1},karyawan1,madiun)
+
+def tampilkanOmsetSemuaToko():
+    # idCabang=input("masukkan cabang yang ingin ditampilkan :")
+    # cabang.tampilkanInfo()
+    listId=list(Toko.getCabangDict().values())
+    for i in listId:
+        data=conn.cursor().execute("select * from toko where idCabang=?",(i,))
+        for row in data:
+            print("Toko {}\t Omset : {}".format(row[1],row[2]))
+
+
+#=============
+def daftarAbsensiKaryawan(cabang):
+    idCabang=Toko.getIdCabang(cabang)
+    data=conn.cursor().execute("select idUser,username,jumlahAbsensi from user")
+    for row in data:
+        if row[0][0]==str(3) and row[0][5]==str(idCabang):
+            print("Nama : {} \t jumlahAbsensi : {} ".format(row[1],row[2]))
+            break
+
+# daftarAbsensiKaryawan("madiun")
+
+#print(Toko.getIdCabang(a))
+# print(Toko.getCabangbyId(3))
+#print(Toko.getCabangDict())
+
+def menu():
+    while True:
+        print("Halooo selamat datang di program kami, untuk melanjutkan silahkan login terlebih dahulu")
+        username=input("masukkan username ")
+        password=input("masukkan password ")
+        a=conn.cursor().execute("select * from user where username=? AND password=?",(username,password))
+        result=a.fetchall()
+        #print(result)
+        if result:
+            print("selamat datang di Branch.it {}".format(username))
+        else:
+            print("maaf, username dan password yang anda masukkan salah. silahkan coba kembali")
+            break
+        idUser=None
+        idCabang=None
+        x=conn.cursor().execute("select idUser from user where username=?",(username,)).fetchall()
+        for row in x:
+            idUser=row[0]
+            idCabang=row[0][5]
+            idJabatan=row[0][0]
+        cabang=Toko.getCabangbyId(int(idCabang))
+
+        if idJabatan=="1":
+            print("""
+            Selamat datang Owner, berikut pilihan menu yang tersedia :
+                1. 
+            """)
+            break
+        elif idJabatan=="2":
+            print("""
+            Selamat datang Bapak/Ibu Manager, berikut pilihan menu yang tersedia :
+                1. 
+            """)
+            break
+        elif idJabatan=="3":
+            print("""
+            Selamat datang {}, berikut pilihan menu yang tersedia :
+                1. 
+            """.format(username))
+            break
+
+        #print(username,idJabatan,idCabang,cabang)
+
+menu()
+
 
     
-cetakTransaksi(karyawan3,"sidoarjo")
 
-def
+
+
+
+
 
 
 

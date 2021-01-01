@@ -1,7 +1,9 @@
 import sqlite3
 
-from User import User,Manager,Karyawan
- from Transaksi import Order,Transaksi,Barang
+# from .User import User,Manager,Karyawan,Owner
+# from .Transaksi import Order,Transaksi,Barang
+from method.Transaksi import Order,Transaksi,Barang
+from method.User import  User,Manager,Karyawan,Owner
 
 
 
@@ -115,3 +117,5 @@ siapaa=Karyawan(7,"siapaa","1234567",1)
 listObject.append(siapaa)
 
 menu()
+
+print("s")

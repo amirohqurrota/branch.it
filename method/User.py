@@ -109,8 +109,8 @@ class Karyawan(User) :
         self.__username=username
         self.__password=password
         self.idJabatan= str(3).zfill(1)
-        id =str(Karyawan.__jumlahKaryawan).zfill(3)
-        self.idUser=str(self.idJabatan) +"-"+ str(self.idStatus) +"-"+ str(self.idCabang)+"-"+ id
+        self.id =str(Karyawan.__jumlahKaryawan).zfill(3)
+        self.idUser=str(self.idJabatan) +"-"+ str(self.idStatus) +"-"+ str(self.idCabang)+"-"+ self.id
         self.totalGaji=self.listGajiPokok(self.idStatus)
         conn.execute("insert or ignore into user values (?,?,?,?,?)" , (self.idUser,self.username,self.__password,self.jumlahAbsensi,self.totalGaji)) #masukkan ke database
         conn.commit()
@@ -130,8 +130,8 @@ class Manager(User) :
         self.__password=password
         self.idStatus=str(1).zfill(2)
         self.idJabatan= str(2).zfill(1)
-        id =str(Manager.__jumlahManager).zfill(3)
-        self.idUser=str(self.idJabatan) +"-"+ str(self.idStatus) +"-"+ str(self.idCabang)+"-"+ id
+        self.id =str(Manager.__jumlahManager).zfill(3)
+        self.idUser=str(self.idJabatan) +"-"+ str(self.idStatus) +"-"+ str(self.idCabang)+"-"+ self.id
         self.totalGaji=2500000
         conn.execute("insert or ignore into user values (?,?,?,?,?)" , (self.idUser,self.username,self.__password,self.jumlahAbsensi,self.totalGaji)) #masukkan ke database
         conn.commit()

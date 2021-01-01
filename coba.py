@@ -29,11 +29,20 @@ idUser=jabatan+"-"+status+"-"+cabang+"-"+jumlahKaryawan
 # a=str(123)
 # b=str(a[0])+str(a[1])
 # print(b)
-a={1:"a",2:"b"}
-print(a[1])
+# a={"sidoarjo":1,"madiun":2}
+# #print(a["sidoarjo"]) 
+# for b in a:
+#     print(a[b])
+a={'sidoarjo': 1, 'madiun': 2, 'surabaya': 3}
+
+key_list = list(a.keys())
+val_list = list(a.values())
+a=1
+position=val_list.index(a)
+print(key_list[position])
 
 
 
-my_data = '1-23-06'
-parsed = my_data.split('-')
-print(parsed)
+# my_data = '1-23-06'
+# parsed = my_data.split('-')
+# print(parsed)

@@ -1,5 +1,6 @@
 import sqlite3
 from .User import User,Owner,Manager,Karyawan
+from .store import Toko as toko
 
 
 databaseName='iniDBbuatCoba.db'
@@ -20,7 +21,7 @@ class Order:
     def __init__(self,username,cabang,totalBelanja):
         Order.__jumlahOrder+=1
         self.id =str(Order.__jumlahOrder).zfill(4)
-        self.__idOrder=username.idCabang+"-"+username.id+"-"+self.id
+        self.__idOrder=str(username.idCabang)+"-"+str(username.id)+"-"+self.id
         self.totalBelanja=totalBelanja
         totalFee=0.15*totalBelanja
         username.setTotalFee(totalFee)
@@ -34,19 +35,20 @@ class Order:
                
 class Transaksi:
     __jumlahTransaksi=0
-    def __init__(self,orderDate,listBarang,username):
+    def __init__(self,orderDate,listBarang,username,cabang):
         Transaksi.__jumlahTransaksi+=1
         self.idUserTransaksi=username.idUser
         self.id =str(Transaksi.__jumlahTransaksi).zfill(4)
-        self.__idTransaksi=username.idCabang+"-"+username.id+"-"+self.id
+        self.__idTransaksi=str(username.idCabang)+"-"+str(username.id)+"-"+str(self.id)
         self.orderDate=orderDate
         self.listBarang=listBarang
         self.totalTransaksi=0
         for i in listBarang:
-           total=listBarang[i]*i.getHarga
+           total=int(listBarang[i])* (i.getHarga())
            self.totalTransaksi+=total
            i.setJumlahTerjual(listBarang[i])
-        Order(username,self.totalTransaksi)
+        Order(username,cabang,self.totalTransaksi)
+        cabang.setOmset(self.totalTransaksi)
         conn.execute("insert or ignore into transaksi values (?,?,?)" , (self.__idTransaksi,self.orderDate,self.totalTransaksi)) #masukkan ke database
         conn.commit()
         
@@ -83,7 +85,7 @@ class Barang:
         self.jumlahTerjual+=jumlah
         self.setJumlahStok(jumlah)
         self.totalKeuntungan()
-        data=conn.cursor().execute("update barang set jumahTerjual=? where idBarang=?",(self.jumlahTerjual,self.idBarang,))
+        data=conn.cursor().execute("update barang set jumlahTerjual=? where idBarang=?",(self.jumlahTerjual,self.idBarang,))
         conn.commit()
         
 # amiroh=Karyawan("amiroh","12345678","Green Hill","Karyawan Tetap",)

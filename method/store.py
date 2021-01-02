@@ -65,12 +65,4 @@ class Toko ():
         """
         .format(self.namaCabang,namaManager,self.omset))
 
-# Sukodono=Toko("Sukodono")
-# a=Toko.getCabangDict()
-# print(a)
-# Madiun=Toko("Madiun")
-# Madiunn=Toko("Madiunm ")
-# b=Toko.getCabangDict()
-# print(b)
 
-# print(Sukodono.idCabang)

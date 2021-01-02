@@ -53,7 +53,7 @@ class Barang:
     
     def setJumlahStok(self,jumlah):
         self.jumlahStok-=jumlah
-        data=conn.cursor().execute("update barang set jumlahStok=? where idBarang=?",(self.jumlahStok,self.idBarang,))
+        conn.cursor().execute("update barang set jumlahStok=? where idBarang=?",(self.jumlahStok,self.idBarang,))
         conn.commit()
         
     def setJumlahTerjual(self,jumlah):
@@ -61,7 +61,7 @@ class Barang:
         self.setJumlahStok(jumlah)
         self.totalKeuntungan()
         # print("-----",self.jumlahTerjual,"-------")
-        data=conn.cursor().execute("update barang set jumlahTerjual=? where idBarang=?",(self.jumlahTerjual,self.idBarang,))
+        conn.cursor().execute("update barang set jumlahTerjual=? where idBarang=?",(self.jumlahTerjual,self.idBarang,))
         conn.commit()
   
 
@@ -94,5 +94,3 @@ class Transaksi:
         conn.execute("insert or ignore into transaksi values (?,?,?)" , (self.__idTransaksi,self.orderDate,self.totalTransaksi)) #masukkan ke database
         conn.commit()
 
-  
-    

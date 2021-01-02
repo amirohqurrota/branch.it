@@ -37,9 +37,9 @@ a={'apel': 1, 'jeruk': 2, 'mangga': 3}
 # for i in listt:
 #      print (listt[i])
 
-barang = list(a.keys())
-jumlah = list(a.values())
-print(val_list)
+# barang = list(a.keys())
+# jumlah = list(a.values())
+print(list(a.values()))
 # a=1
 # position=val_list.index(a)
 # print(key_list[position])

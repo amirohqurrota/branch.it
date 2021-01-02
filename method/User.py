@@ -140,8 +140,5 @@ class Manager(User) :
         print("username : {} /n Status : {} /n Jabatan : {}".format(self.username,self.status,self.jabatan))
 
 
-# amiroh1=Karyawan("woy2","12345678","Jember","Karyawan Tetap",)
-# amiroh2=Manager("woyy","12345678","Green Hill","Karyawan Magang",)
-# amiroh2.setTotalFee(2000000)
-# amiroh2.setJumlahAbsensi()
-# print(amiroh.idUser)
+
+

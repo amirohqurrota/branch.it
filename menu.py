@@ -65,15 +65,23 @@ def tampilkanOmsetSemuaToko():
         for row in data:
             print("Toko {}\t Omset : {}".format(row[1],row[2]))
 
+def tambahToko():
+    namaToko=input("Masukkan nama cabang/toko yang baru ")
+    stringToko=namaToko
+    namaToko=Toko(str(namaToko))
+    namaManager=input("masukkan username claon manager ")
+    password=input("masukkan password calon manager ")
+    namaManager=Manager(namaManager,password,stringToko,00)
+    print("Berhasil menambahkan toko dan manager baru!")
 
 #=============
-def daftarAbsensiKaryawan(cabang):
-    idCabang=Toko.getIdCabang(cabang)
-    data=conn.cursor().execute("select idUser,username,jumlahAbsensi from user")
+def daftarKaryawan(idCabang):
+    #idCabang=Toko.getIdCabang(cabang)
+    data=conn.cursor().execute("select * from user")
     for row in data:
         if row[0][0]==str(3) and row[0][5]==str(idCabang):
-            print("Nama : {} \t jumlahAbsensi : {} ".format(row[1],row[2]))
-            break
+            print("Nama Karyawan : {} \t jumlahAbsensi : {} \t total Gaji : ".format(row[1],row[3],row[4]))
+
 
 
 def rekapitulasiToko(idCabang):
@@ -93,6 +101,27 @@ def rekapitulasiSemuaToko():
     listIdToko=list(dictToko.values())
     for i in listIdToko:
         rekapitulasiToko(i)
+
+def tampilkanSemuaPegawai():
+    data=conn.cursor().execute("select * from user")
+    listManager=[]
+    for row in data:
+        if row[0][0]=="2":
+            listManager.append(row)
+    listToko=Toko.getCabangDict()
+    listIdToko=list(listToko.values())
+    for i in listIdToko:
+        for row in listManager:
+            print("=== CABANG TOKO {} ===".format(Toko.getCabangbyId(i).upper()))
+            print("Manager Cabang : {}".format(row[1]))
+            daftarKaryawan(i)
+
+    # for i in listIdToko:
+    #     for row in data:
+    #         a=row[0].split("-")
+    #         if row[0][0]==2 and a[3]==i:
+
+
 
 
 def tambahBarang():
@@ -163,6 +192,9 @@ def menuOwner():
                 3. Melihat data stok barang di semua toko
                 4. Omset keseluruhan
                 5. Rank Toko dengan Omset Tertinggi 
+                6. menambahkan data toko baru
+                7. Melihat Data seluruh pegawai
+                8. exit
             """)
     pilihan=input("masukkan angka pilihan menu : ")
     if pilihan=="1":
@@ -201,6 +233,24 @@ def menuOwner():
             menuOwner()
         else:
             print("terimakasih Owner, sampai jumpa besok")
+    elif pilihan=="6":
+        tambahToko()
+        inputMenu=input("apakah ingin kembali ke menu? y/n ")
+        if inputMenu== "y":
+            menuOwner()
+        else:
+            print("terimakasih Owner, sampai jumpa besok")
+    elif pilihan=="7":
+        tampilkanSemuaPegawai()
+        inputMenu=input("apakah ingin kembali ke menu? y/n ")
+        if inputMenu== "y":
+            menuOwner()
+        else:
+            print("terimakasih Owner, sampai jumpa besok")
+    elif pilihan=="8":
+        print("terimakasih Owner, sampai jumpa besok")
+    else :
+        print("Maaf Owner, inputanmu salah. coba lagi ya!")
   
 
 def menuManager():
@@ -322,17 +372,20 @@ def menuLanding():
         global namaBarang
         print("Halooo selamat datang di program kami, untuk melanjutkan silahkan login terlebih dahulu")
         username=input("masukkan username ")
-        usernameObjek=eval(username)
-        
         password=input("masukkan password ")
         a=conn.cursor().execute("select * from user where username=? AND password=?",(username,password))
         result=a.fetchall()
         #print(result)
         if result:
             print("selamat datang di Branch.it {}".format(username))
+            usernameObjek=eval(username)
         else:
             print("maaf, username dan password yang anda masukkan salah. silahkan coba kembali")
-            break
+            pilihan=input("kembali ke menu awal? y/n ")
+            if pilihan=="y":
+                menuLanding()
+            else:
+                break
         
         x=conn.cursor().execute("select idUser from user where username=?",(username,)).fetchall()
         for row in x:

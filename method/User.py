@@ -1,7 +1,7 @@
 import sqlite3
 
 from .store import Toko
-databaseName='iniDBbuatCoba.db'
+databaseName='databaseBranch.it.db'
 conn = sqlite3.connect(databaseName)
 
 
@@ -62,82 +62,8 @@ class User :
     #         total=feeJabatan+gajiPokok
     #     print("total gaji {} adalah {}".format(self.username,total))
 
-class Owner(User):
-    __jumlahOwner=1
-    
-    @classmethod  #agar method nempel di class bukan di object 
-    def listStatus(cls,idStatus): #override method listStatus yang ada di user
-        None
-    
-    def __init__(self,username,password,cabang,status):
-        super().__init__(username,password,cabang,"Owner")
-        self.__password=password
-        self.idJabatan=str(1).zfill(1)
-        self.idStatus=str(0).zfill(2)
-        self.idCabang=str(0).zfill(2)
-        self.id =str(Owner.__jumlahOwner).zfill(3)
-        self.idUser=str(self.idJabatan) +"-"+ str(self.idStatus) +"-"+ str(self.idCabang)+"-"+ self.id
-        conn.execute("insert or ignore into user values (?,?,?,?,?)" , (self.idUser,self.username,self.__password,self.jumlahAbsensi,self.totalGaji)) #masukkan ke database
-        conn.commit()
-        
-    def showInfo(self):
-        print("username : {} /n Jabatan : {} /n Status : {}".format(self.username,self.jabatan,self.status))
-
     
     
-class Karyawan(User) :
-    __jumlahKaryawan=0
-    __statusDict = {"Karyawan Tetap": 1,"Karyawan Tidak Tetap": 2,"Karyawan Magang":3}
-    @classmethod  #agar method nempel di class bukan di object 
-    def listStatus(cls,status): #override method listStatus yang ada di user
-        idStatus=str((Karyawan.__statusDict[status])).zfill(2)
-        return idStatus
-
-    @classmethod  #agar method nempel di class bukan di object 
-    def listGajiPokok(cls,idStatus): #override method listStatus yang ada di user
-        gajiPokokDict={1:1500000,2:1000000,3:500000}
-        gajiPokok=gajiPokokDict[int(idStatus)]
-        return gajiPokok
-    @classmethod
-    def getStatusDict(cls):
-        return Karyawan.__statusDict
-    
-    def __init__(self,username,password,cabang,status):
-        Karyawan.__jumlahKaryawan+=1
-        super().__init__(username,password,cabang,status)
-        self.__username=username
-        self.__password=password
-        self.idJabatan= str(3).zfill(1)
-        self.id =str(Karyawan.__jumlahKaryawan).zfill(3)
-        self.idUser=str(self.idJabatan) +"-"+ str(self.idStatus) +"-"+ str(self.idCabang)+"-"+ self.id
-        self.totalGaji=self.listGajiPokok(self.idStatus)
-        conn.execute("insert or ignore into user values (?,?,?,?,?)" , (self.idUser,self.username,self.__password,self.jumlahAbsensi,self.totalGaji)) #masukkan ke database
-        conn.commit()
-        
-    def showInfo(self):
-        print("username : {} /n Jabatan : {} /n Status : {}".format(self.username,self.jabatan,self.status))
-
-
-class Manager(User) :
-
-    __jumlahManager=0
-    
-    def __init__(self,username,password,cabang,status):
-        Manager.__jumlahManager+=1
-        super().__init__(username,password,cabang,status)
-        self.__username=username
-        self.__password=password
-        self.idStatus=str(1).zfill(2)
-        self.idJabatan= str(2).zfill(1)
-        self.id =str(Manager.__jumlahManager).zfill(3)
-        self.idUser=str(self.idJabatan) +"-"+ str(self.idStatus) +"-"+ str(self.idCabang)+"-"+ self.id
-        self.totalGaji=2500000
-        conn.execute("insert or ignore into user values (?,?,?,?,?)" , (self.idUser,self.username,self.__password,self.jumlahAbsensi,self.totalGaji)) #masukkan ke database
-        conn.commit()
-        
-        
-    def showInfo(self,username,status,jabatan):
-        print("username : {} /n Status : {} /n Jabatan : {}".format(self.username,self.status,self.jabatan))
 
 
 

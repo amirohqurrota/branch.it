@@ -1,30 +1,18 @@
-
 import sqlite3
 
-databaseName='iniDBbuatCoba.db'
+databaseName='databaseBranch.it.db'
 conn = sqlite3.connect(databaseName)
 
 from method import *
 from databaseInit import *
 
 
-#login()
-def login():
-    username=input("masukkan username ")
-    password=input("masukkan password ")
-    a=conn.cursor().execute("select * from user where username=? AND password=?",(username,password))
-    result=a.fetchall()
-    print(result)
-    if result:
-        print("selamat datang di Branch.it {}".format(username))
-    else:
-        print("maaf, username dan password yang anda masukkan salah. silahkan coba kembali")
+
 
 #absenKehadiran()
 def absenKehadiran(username):
     username.setJumlahAbsensi()
     print("Absensi telah ditambahkan, Selamat Bekerja!")
-
 
 def cekStokToko(cabang):
     id=Toko.getIdCabang(str(cabang))
@@ -33,7 +21,6 @@ def cekStokToko(cabang):
         print("====")
         print("{}\t stok : {}".format(row[1],row[4]))
 
-
 def cekStokSemuaToko():
     listId=list(Toko.getCabangDict().values())
     for i in listId:
@@ -41,7 +28,6 @@ def cekStokSemuaToko():
         data=conn.cursor().execute("select * from barang where idCabang=?",(i,))
         for row in data:
             print("{}\t stok : {}".format(row[1],row[4]))
-
 
 def cetakTransaksi(username,cabang):
     cekStokToko(cabang)
@@ -53,12 +39,11 @@ def cetakTransaksi(username,cabang):
     Transaksi(tgl,listTransaksi,username,cabangObjek)
     namaBarang=eval(barang+str(idCabang))
     namaBarang.setJumlahTerjual(jumlah)
-    # acer2.setJumlahTerjual(1)
+ 
     
 
 def tampilkanOmsetSemuaToko():
-    # idCabang=input("masukkan cabang yang ingin ditampilkan :")
-    # cabang.tampilkanInfo()
+    
     listId=list(Toko.getCabangDict().values())
     for i in listId:
         data=conn.cursor().execute("select * from toko where idCabang=?",(i,))
@@ -76,12 +61,10 @@ def tambahToko():
 
 #=============
 def daftarKaryawan(idCabang):
-    #idCabang=Toko.getIdCabang(cabang)
     data=conn.cursor().execute("select * from user")
     for row in data:
         if row[0][0]==str(3) and row[0][5]==str(idCabang):
-            print("Nama Karyawan : {} \t jumlahAbsensi : {} \t total Gaji : ".format(row[1],row[3],row[4]))
-
+            print("Nama Karyawan : {} \t jumlahAbsensi : {} \t total Gaji : {} ".format(row[1],row[3],row[4]))
 
 
 def rekapitulasiToko(idCabang):
@@ -110,18 +93,13 @@ def tampilkanSemuaPegawai():
             listManager.append(row)
     listToko=Toko.getCabangDict()
     listIdToko=list(listToko.values())
-    for i in listIdToko:
-        for row in listManager:
-            print("=== CABANG TOKO {} ===".format(Toko.getCabangbyId(i).upper()))
-            print("Manager Cabang : {}".format(row[1]))
-            daftarKaryawan(i)
-
-    # for i in listIdToko:
-    #     for row in data:
-    #         a=row[0].split("-")
-    #         if row[0][0]==2 and a[3]==i:
-
-
+    a=0
+    for row in listManager:
+        idCari=listIdToko[a]
+        print("=== CABANG TOKO {} ===".format(Toko.getCabangbyId(idCari).upper()))
+        print("Manager Cabang : {}".format(row[1]))
+        daftarKaryawan(idCari)
+        a+=1
 
 
 def tambahBarang():
@@ -134,10 +112,8 @@ def tambahBarang():
 
 def tambahKaryawan():
     usernameKaryawan=input("masukkan nama karyawan baru :")
-    password=int(input("masukkan password karyawan baru :"))
+    password=str(input("masukkan password karyawan baru :"))
     listStatus=Karyawan.getStatusDict()
-    # for i in listStatus:
-    # print ("status {} ".format(i))
     status=input("masukkan status kepegawaian karyawan :")
     status=status.title()
     usernameKaryawan=Karyawan(usernameKaryawan,password,cabang,status)
@@ -151,12 +127,12 @@ def dataKehadiranKaryawan(idCabang):
 
 def ubahStok(idCabang):
     cekStokToko(str(cabang))
-    namaBarang=input("masukkan nama barang yang ingin diubah")
+    namaBarang=input("masukkan nama barang yang ingin diubah :")
     idBarang=None
     data=conn.cursor().execute("select idBarang from barang where namaBarang=? and idCabang=?",(namaBarang,idCabang,))
     for row in data:
         idBarang=row[0]
-    jumlah=int(input("masukkan update jumlah barang"))
+    jumlah=int(input("masukkan update jumlah barang :"))
     data=conn.cursor().execute("update barang set jumlahStok=? where idBarang=?",(jumlah,idBarang,))
     conn.commit()
 
@@ -249,8 +225,10 @@ def menuOwner():
             print("terimakasih Owner, sampai jumpa besok")
     elif pilihan=="8":
         print("terimakasih Owner, sampai jumpa besok")
+        
     else :
         print("Maaf Owner, inputanmu salah. coba lagi ya!")
+        menuOwner()
   
 
 def menuManager():
@@ -262,6 +240,7 @@ def menuManager():
             4. Melihat data kehadiran karyawan
             5. Melihat rekapitulasi penjualan toko
             6. Rank penjualan barang tertinggi
+            7. exit
 
             """)
     pilihanManager=input("masukkan angka pilihan menu : ")
@@ -311,6 +290,13 @@ def menuManager():
             menuManager()
         else:
             print("terimakasih, sampai jumpa besok")
+            login=False
+    elif pilihanManager=="7":
+        print("sampai jumpa besok, Manager!")
+
+    else :
+        print("maaf, inputan anda salah, coba lagi ya!")
+        menuManager()
 
 
 def menuKaryawan():
@@ -354,8 +340,9 @@ def menuKaryawan():
             print("terimakasih, sampai jumpa besok")
     elif pilihan=="5":
         print("terimakasih, sampai ketemu besok!")
-
-
+    else:
+        print("maaf, inputanmu salah. coba lagi ya!")
+        menuKaryawan()
 
 
 
@@ -370,6 +357,10 @@ def menuLanding():
         global cabang
         global cabangObjek
         global namaBarang
+        global login
+        login=False 
+        # print(login)
+        
         print("Halooo selamat datang di program kami, untuk melanjutkan silahkan login terlebih dahulu")
         username=input("masukkan username ")
         password=input("masukkan password ")
@@ -379,6 +370,7 @@ def menuLanding():
         if result:
             print("selamat datang di Branch.it {}".format(username))
             usernameObjek=eval(username)
+            login=True
         else:
             print("maaf, username dan password yang anda masukkan salah. silahkan coba kembali")
             pilihan=input("kembali ke menu awal? y/n ")
@@ -398,17 +390,20 @@ def menuLanding():
             cabang=Toko.getCabangbyId(int(idCabang))
             cabangObjek=eval(cabang)
         objek=eval(username)
-        if idJabatan=="1":
-            menuOwner()
-            break
-        elif idJabatan=="2":
-            menuManager()
-            break
-        elif idJabatan=="3":
-            menuKaryawan()
-            break
+
+        while login:
+            if idJabatan=="1":
+                menuOwner()
+                break
+            elif idJabatan=="2":
+                menuManager()
+                break
+            elif idJabatan=="3":
+                menuKaryawan()
+                break
 
         #print(username,idJabatan,idCabang,cabang)
+
 
 
 menuLanding()

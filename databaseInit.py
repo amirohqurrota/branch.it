@@ -1,7 +1,7 @@
 import sqlite3
 from method import *
 
-databaseName='iniDBbuatCoba.db'
+databaseName='databaseBranch.it.db'
 conn = sqlite3.connect(databaseName)
 
 conn.execute("DROP TABLE IF EXISTS orderTabel")
